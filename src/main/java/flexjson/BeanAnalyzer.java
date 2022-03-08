@@ -3,7 +3,15 @@ package flexjson;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class BeanAnalyzer {
 
@@ -109,13 +117,52 @@ public class BeanAnalyzer {
     }
 
     public Collection<BeanProperty> getProperties() {
-        Map<String,BeanProperty> properties = new TreeMap<String,BeanProperty>(this.properties);
+
+        Map<String,BeanProperty> properties;
+        if ( clazz.isAnnotationPresent( BeanPropertyOrder.class ) ) {
+
+            String[] propOrder = ( (BeanPropertyOrder) clazz.getAnnotation( BeanPropertyOrder.class ) ).propertyOrder();
+            properties = new TreeMap<String,BeanProperty>( new BeanPropertyComparator<>( propOrder ) );
+            properties.putAll( this.properties );
+        } else {
+            properties = new TreeMap<String,BeanProperty>(this.properties);
+        }
         BeanAnalyzer current = this.superBean;
         while( current != null ) {
             merge( properties, current.properties );
             current = current.superBean;
         }
+
+
+//            if ( propOrder.length > 0 ) {
+//                List<String> propOrderList = Arrays.asList( propOrder );
+//                sortByPropOrder( properties, propOrderList);
+//            }
+//        }
+
         return properties.values();
+    }
+
+    class BeanPropertyComparator<K> implements Comparator<K> {
+
+        private List<String> propOrder = Collections.emptyList();
+
+        public BeanPropertyComparator( String[] propOrder ) {
+            super();
+            if ( propOrder.length > 0 ) {
+                List<String> propOrderList = Arrays.asList( propOrder );
+            }
+        }
+
+        public int compare( K k1, K k2 ) {
+
+            if ( propOrder.indexOf( k1 ) < propOrder.indexOf( k2 ) ) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+
     }
 
     private void merge(Map<String, BeanProperty> destination, Map<String, BeanProperty> source) {
