@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,14 +14,14 @@ import java.util.TreeMap;
 
 public class BeanAnalyzer {
 
-    private static ThreadLocal<Map<Class,BeanAnalyzer>> cache = new ThreadLocal<Map<Class,BeanAnalyzer>>();
+    private static ThreadLocal<Map<Class<?>,BeanAnalyzer>> cache = new ThreadLocal<Map<Class<?>,BeanAnalyzer>>();
 
-    private Class clazz;
+    private Class<?> clazz;
     private BeanAnalyzer superBean;
     private Map<String,BeanProperty> properties;
 
-    public static BeanAnalyzer analyze( Class clazz ) {
-        if( cache.get() == null ) cache.set( new HashMap<Class,BeanAnalyzer>() );
+    public static BeanAnalyzer analyze( Class<?> clazz ) {
+        if( cache.get() == null ) cache.set( new HashMap<Class<?>,BeanAnalyzer>() );
         if( clazz == null ) return null;
         if( !cache.get().containsKey(clazz) ) {
             cache.get().put( clazz, new BeanAnalyzer(clazz) );
@@ -34,7 +33,7 @@ public class BeanAnalyzer {
         cache.remove();
     }
 
-    protected BeanAnalyzer(Class clazz) {
+    protected BeanAnalyzer(Class<?> clazz) {
         this.clazz = clazz;
         superBean = analyze( clazz.getSuperclass() );
         populateProperties();
@@ -118,49 +117,53 @@ public class BeanAnalyzer {
 
     public Collection<BeanProperty> getProperties() {
 
-        Map<String,BeanProperty> properties;
-        if ( clazz.isAnnotationPresent( BeanPropertyOrder.class ) ) {
+        Map<String,BeanProperty> properties = new TreeMap<String,BeanProperty>(this.properties);
 
-            String[] propOrder = ( (BeanPropertyOrder) clazz.getAnnotation( BeanPropertyOrder.class ) ).propertyOrder();
-            properties = new TreeMap<String,BeanProperty>( new BeanPropertyComparator<>( propOrder ) );
-            properties.putAll( this.properties );
-        } else {
-            properties = new TreeMap<String,BeanProperty>(this.properties);
-        }
         BeanAnalyzer current = this.superBean;
         while( current != null ) {
             merge( properties, current.properties );
             current = current.superBean;
         }
 
+        // If there is an annotation controlling the order of the bean properties, apply that order using a new
+        // Map that employs a custom Comparator along with the properties and return the resulting ordered values.
+        if ( clazz.isAnnotationPresent( BeanPropertyOrder.class ) ) {
 
-//            if ( propOrder.length > 0 ) {
-//                List<String> propOrderList = Arrays.asList( propOrder );
-//                sortByPropOrder( properties, propOrderList);
-//            }
-//        }
+            String[] propOrder = ( (BeanPropertyOrder) clazz.getAnnotation( BeanPropertyOrder.class ) ).propertyOrder();
+            Map<String,BeanProperty> orderedProperties =
+                    new TreeMap<String,BeanProperty>(
+                            new BeanPropertyComparator( propOrder ) );
+            orderedProperties.putAll( properties );
+            return orderedProperties.values();
+        }
 
+        // No need for ordering the properties. They will be returned in natural order (alphabetical).
         return properties.values();
     }
 
-    class BeanPropertyComparator<K> implements Comparator<K> {
+    /**
+     * Comparator that uses a property-name order List to order Strings (property names) based
+     * on the property name's position in that list.
+     * 
+     * @author Ted Keilman
+     */
+    class BeanPropertyComparator implements Comparator<String> {
 
-        private List<String> propOrder = Collections.emptyList();
+        private List<String> propOrderList;
 
         public BeanPropertyComparator( String[] propOrder ) {
             super();
             if ( propOrder.length > 0 ) {
-                List<String> propOrderList = Arrays.asList( propOrder );
+                propOrderList = Arrays.asList( propOrder );
             }
         }
 
-        public int compare( K k1, K k2 ) {
+        /**
+         * The objects are compared by comparing their position in the property order list.
+         */
+        public int compare( String k1, String k2 ) {
 
-            if ( propOrder.indexOf( k1 ) < propOrder.indexOf( k2 ) ) {
-                return 1;
-            } else {
-                return -1;
-            }
+            return propOrderList.indexOf( k1 ) - propOrderList.indexOf( k2 );
         }
 
     }
