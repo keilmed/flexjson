@@ -3,12 +3,9 @@ package flexjson;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -125,47 +122,18 @@ public class BeanAnalyzer {
             current = current.superBean;
         }
 
-        // If there is an annotation controlling the order of the bean properties, apply that order using a new
-        // Map that employs a custom Comparator along with the properties and return the resulting ordered values.
-        if ( clazz.isAnnotationPresent( BeanPropertyOrder.class ) ) {
+        // If the bean has an annotation to control the order of the bean property values, apply that order by
+        // using a new Map that employs a custom Comparator and return the resulting ordered property values.
+        if ( clazz.isAnnotationPresent( BeanPropertySerializationOrder.class ) ) {
 
-            String[] propOrder = ( (BeanPropertyOrder) clazz.getAnnotation( BeanPropertyOrder.class ) ).propertyOrder();
-            Map<String,BeanProperty> orderedProperties =
-                    new TreeMap<String,BeanProperty>(
-                            new BeanPropertyComparator( propOrder ) );
+            String[] propOrder = ( (BeanPropertySerializationOrder) clazz.getAnnotation( BeanPropertySerializationOrder.class ) ).propertyOrder();
+            Map<String,BeanProperty> orderedProperties = new TreeMap<String,BeanProperty>( new BeanPropertyComparator( propOrder ) );
             orderedProperties.putAll( properties );
             return orderedProperties.values();
         }
 
-        // No need for ordering the properties. They will be returned in natural order (alphabetical).
+        // Property values are not being custom ordered. They will be returned in natural order (alphabetical).
         return properties.values();
-    }
-
-    /**
-     * Comparator that uses a property-name order List to order Strings (property names) based
-     * on the property name's position in that list.
-     * 
-     * @author Ted Keilman
-     */
-    class BeanPropertyComparator implements Comparator<String> {
-
-        private List<String> propOrderList;
-
-        public BeanPropertyComparator( String[] propOrder ) {
-            super();
-            if ( propOrder.length > 0 ) {
-                propOrderList = Arrays.asList( propOrder );
-            }
-        }
-
-        /**
-         * The objects are compared by comparing their position in the property order list.
-         */
-        public int compare( String k1, String k2 ) {
-
-            return propOrderList.indexOf( k1 ) - propOrderList.indexOf( k2 );
-        }
-
     }
 
     private void merge(Map<String, BeanProperty> destination, Map<String, BeanProperty> source) {

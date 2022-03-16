@@ -21,12 +21,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used by {@link BeanAnalyzer} to order the bean
- * properties using a Comparator rather than just a natural order.
+ * This annotation is used by {@link BeanAnalyzer} to order bean properties
+ * before serializing by using a Comparator rather than just a natural order.<br>
+ * Use like:<br><code>{@link BeanPropertySerializationOrder}( propertyOrder={"propertyName1", "propertyName2", "propertyName3"} )</code>
+ * <br>NOTE: Spelling counts of course. Make sure to double-check that your parameter names in the array match those in the bean.
  */
 @Retention( value = RetentionPolicy.RUNTIME )
 @Target( value = ElementType.TYPE )
-public @interface BeanPropertyOrder {
+public @interface BeanPropertySerializationOrder {
 
     String[] propertyOrder() default "";
 
