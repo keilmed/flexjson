@@ -15,11 +15,12 @@
     <h2>Version 3.3</h2>
     <h3>Oct 13, 2014</h3>
     <ul>
-        <li>Enhancements</li>
+        <li>Enhancements
         <ul>
             <li>None</li>
         </ul>
-        <li>Bug Fixes</li>
+        </li>
+        <li>Bug Fixes
         <ul>
             <li>@JSON.transformer fields weren't being used by the serializers</li>
             <li>Default Transformers exception thrown when null values are encountered</li>
@@ -28,12 +29,13 @@
                 superclass or interface failed to be recognized as read/write methods.
             </li>
         </ul>
+        </li>
     </ul>
 
     <h2>Version 3.2</h2>
     <h3>Jan 26, 2013</h3>
     <ul>
-        <li>Enhancements</li>
+        <li>Enhancements
         <ul>
             <li>Added better messages when certain exceptions are thrown.</li>
             <li>Added better support for deserializing into existing collections and maps.</li>
@@ -41,28 +43,32 @@
             <li>Added support for escaping XSS attacks</li>
             <li>Added OSGi support to pom with maven bundle plugin</li>
         </ul>
-        <li>Bug Fixes</li>
+        </li>
+        <li>Bug Fixes
         <ul>
             <li>None</li>
         </ul>
+        </li>
     </ul>
 
     <h2>Version 3.1</h2>
     <h3>March 19, 2013</h3>
     <ul>
-        <li>Enhancements</li>
+        <li>Enhancements
         <ul>
             <li>None</li>
         </ul>
-        <li>Bug Fixes</li>
+        </li>
+        <li>Bug Fixes
         <ul>
             <li>3608514 - Methods returning a superclass or interface of a property defined as a concrete type failed to be recognized as property methods.</li>
         </ul>
+        </li>
     </ul>
     <h2>Version 3.0</h2>
     <h3>Jan 7, 2012</h3>
     <ul>
-        <li>Enhancements</li>
+        <li>Enhancements
         <ul>
             <li>
                 <p>
@@ -100,9 +106,10 @@
                 <p>java.util.Calendar was not recognized as a default serialized type, and would throw exceptions.</p>
             </li>
         </ul>
+        </li>
     </ul>
     <ul>
-        <li>Bug Fixes</li>
+        <li>Bug Fixes
         <ul>
             <li>
                 <p>
@@ -155,11 +162,12 @@
                 <p>Fixed underflow issues where a Date that could fit inside an Integer was being returned as an Int instead of Long.</p>
             </li>
         </ul>
+        </li>
     </ul>
     <h2>Version 2.1</h2>
     <h3>Sept 20, 2010</h3>
     <ul>
-        <li>Enhancements</li>
+        <li>Enhancements
         <ul>
             <li>
                 <p>
@@ -187,7 +195,8 @@
                 </p>
             </li>
         </ul>
-        <li>Bug Fixes</li>
+        </li>
+        <li>Bug Fixes
         <ul>
             <li>
                 <p>
@@ -249,11 +258,12 @@
                 </p>
             </li>
         </ul>
+        </li>
     </ul>
     <h2>Version 2.0</h2>
     <h3>Dec 12, 2009</h3>
     <ul>
-        <li>Enhancements</li>
+        <li>Enhancements
         <ul>
             <li>
                 <p>
@@ -285,11 +295,12 @@
                 </p>
             </li>
         </ul>
+        </li>
     </ul>
     <h2>Version 1.9.2</h2>
     <h3>Dec 16, 2009</h3>
     <ul>
-        <li>Bug Fixes</li>
+        <li>Bug Fixes
         <ul>
             <li>
                 <p>
@@ -307,11 +318,12 @@
                 </p>
             </li>
         </ul>
+        </li>
     </ul>
     <h2>Version 1.9.1</h2>
     <h3>Dec 7, 2009</h3>
     <ul>
-        <li>Bug Fixes</li>
+        <li>Bug Fixes
         <ul>
             <li>
                 <p>
@@ -341,11 +353,12 @@
                 </p>
             </li>
         </ul>
+        </li>
     </ul>
     <h2>Version 1.9</h2>
     <h3>Nov 23, 2009</h3>
     <ul>
-        <li>Enhancements</li>
+        <li>Enhancements
         <ul>
             <li>
                 This is the biggest set of changes to the JSONDeserializer since it was written.  The
@@ -397,9 +410,10 @@
                 prior versions.
             </li>
         </ul>
+        </li>
     </ul>
     <ul>
-        <li>Bug Fixes</li>
+        <li>Bug Fixes
         <ul>
             <li>
                 Default DateFormats were in conflict with each other.  While we try and recognize as many
@@ -422,11 +436,12 @@
                 deserialized inside Collections.  Most of the rework done for 1.9 fixed these issues.
             </li>
         </ul>
+        </li>
     </ul>
     <h2>Version 1.8</h2>
     <h3>Aug 23, 2009</h3>
     <ul>
-        <li>Bug Fixes</li>
+        <li>Bug Fixes
         <ul>
             <li>Improved handling ParameterizedTypes with generics.</li>
             <li>Fixed handling Maps embedded in objects.</li>
@@ -434,21 +449,24 @@
             <li>Fixed bugs with generic Map handling when top level maps are the return types of JSONDeserializer.</li>
             <li>Added better support for general Generic classes not just collections.</li>
         </ul>
+        </li>
     </ul>
     <h2>Version 1.7</h2>
     <h3>Dec 31, 2008</h3>
     <ul>
-        <li>Enhancements</li>
+        <li>Enhancements
         <ul>
             <li>Added a preliminary deserializer for reconstituting Java objects from JSON.</li>
         </ul>
+        </li>
     </ul>
     <ul>
-        <li>Bug Fixes</li>
+        <li>Bug Fixes
         <ul>
             <li>Hibernate object's classes weren't being properly written out correctly.</li>
             <li>Performance problem with escaping Strings for JSON encoding.  Still more can be done.</li>
         </ul>
+        </li>
     </ul>
     <h2>Version 1.6</h2>
     <h3>Sept 26, 2007</h3>

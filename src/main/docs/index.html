@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>JSON Serialization Usage</title>
     <link rel='stylesheet' type='text/css' href='flexjson.css'/>
@@ -60,7 +60,7 @@
         In the above diagram you can see Person has many instances of Phone, and has many Addresses.  While this is a
         trival object model it will help us demostrate the ideas behind Flexjson.
     </p>
-    <a name="Serialization"><h2>Serialization</h2></a>
+    <h2><a name="Serialization">Serialization</a></h2>
     <h3> The Basics </h3>
     <p>
         Flexjson takes a different approach allowing you to control the depth to which it will serialize.  It's very
@@ -460,9 +460,10 @@
 
     <h3>Transformers More Than Meets the Eye</h3>
     <div class="important">Transformers are central to how Flexjson works in 2.0.</div>
-    <p>
-        Flexjson 2.0 has been completely rewritten to make Transformers central to how processing Java into JSON works.
-        With this core restructuring, Transformers have much more flexibility and power.
+        <p>
+            Flexjson 2.0 has been completely rewritten to make Transformers central to how processing Java into JSON works.
+            With this core restructuring, Transformers have much more flexibility and power.
+        </p>
 
         <h3>What is a transformer?</h3>
         <p>
@@ -943,7 +944,7 @@
     </blockquote>
 
 
-    <a name="Deserialization"><h2>Deserialization</h2></a>
+    <h2><a name="Deserialization">Deserialization</a></h2>
 
     <p>
         Deserialization is the process of taking JSON text binding those values into Objects.  This process can be
@@ -965,7 +966,7 @@
     <blockquote class="java">
         Hero harveyBirdman = new Hero("Harvey Birdman",
                                        new SecretIdentity("Attorney At Law"),
-                                       new SecretLair("Sebben & Sebben") );
+                                       new SecretLair("Sebben &amp; Sebben") );
         String jsonHarvey = new JSONSerialize().serialize(hero);
     </blockquote>
     <p>
